@@ -358,8 +358,6 @@ function roller(){
         else {
             noroll = false;
             getRandom();
-            numcheck();
-            diecheck();
             rolldie();
         }
     });
@@ -387,8 +385,8 @@ function rolldie() {
         for(let i = 0; i < face.length; i++){
             face[i].style.backgroundColor = "rgba(255, 255, 255, 0.5)"; 
         }
-        if (i <= 2000 + 16.667) {
-            die.style.transform = `rotateX(${prevX*90 + (i / 2000)*rolledX*90}deg) rotateY(${prevY*90 + (i / 2000)*rolledY*90}deg)`;
+        if (i <= 1000 + 16.667) {
+            die.style.transform = `rotateX(${prevX*90 + (i / 1000)*rolledX*90}deg) rotateY(${prevY*90 + (i / 1000)*rolledY*90}deg)`;
             i += 16.667;
         }
         else {
@@ -397,8 +395,9 @@ function rolldie() {
             }
             prevX += rolledX;
             prevY += rolledY;
-            numcheck();
             clearInterval(rollinter);
+            numcheck();
+            diecheck();
         }
     }, 16.667);
 }
