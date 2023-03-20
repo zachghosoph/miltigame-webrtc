@@ -35,7 +35,7 @@ function createroom() {
     document.cookie = `joinRoom(config,'room${globalroomid}') ${selfId} ${pname}`;
     setTimeout(function () {
         window.location = 'board.html'
-    }, 200);
+    }, 500);
 }
 
 
@@ -106,14 +106,12 @@ document.addEventListener('click', (e) => {
 function initiatemulti(gameid, playerid) {
     removeserverlist(playerid);
     sendcstatus({ lobbyfull: playerid })
+    room.leave();
     setTimeout(function () {
-        room.leave();
-        setTimeout(function () {
-            room = eval(gameid);
-            console.log(room);
-            window.location = 'board.html';
-        }, 200);
-    }, 200);
+        room = eval(gameid);
+        console.log(room);
+        window.location = 'board.html';
+    }, 500);
 }
 
 function removeserverlist(playerid) {

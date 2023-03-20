@@ -1,4 +1,4 @@
-import { joinRoom, selfId } from 'https://cdn.skypack.dev/trystero/ipfs';
+import {joinRoom} from 'https://cdn.skypack.dev/trystero/ipfs';
 const config = { appId: 'line-up' };
 let room = joinRoom(config, 'session-join');
 room.onPeerJoin(peerId => console.log(`${peerId} joined`))
@@ -7,7 +7,6 @@ room.onPeerLeave(peerId => console.log(`${peerId} left`))
 let prevarr;
 let previd;
 let roomtojoin;
-let username;
 let x = document.cookie;
 
 let [sendcstatus, getcstatus] = room.makeAction('cstatus')
@@ -20,18 +19,29 @@ window.onload = (event) => {
     console.log(roomtojoin);
 };
 
-let gofirst;
-
 getcstatus((data) => {
     if (data.lobbyfull = previd) {
         room.leave();
-        console.log(room);
         setTimeout(function () {
             room = eval(roomtojoin);
             sendturn({turn: false});
-        }, 200);
+            getperson();
+        }, 500);
     }
+});
+
+let [sendbcast, getbcast] = room.makeAction('bcast');
+
+function getperson(){
+    setInterval(function (){
+        sendbcast({bcast : "inroom"})
+    }, 200)
+}
+
+getbcast((data) => {
+    console.log("e");
 })
+
 
 let [sendturn, getturn] = room.makeAction('turn')
 
