@@ -17,34 +17,28 @@ window.onload = (event) => {
     prevarr = x.split(" ");
     roomtojoin = prevarr[0];
     previd = prevarr[1]; 
-    username = prevarr[2];
+    console.log(roomtojoin);
 };
 
-let heads;
 
-let [sendname, getname] = room.makeAction('flipname')
 
-getcstatus((data, peerId) => {
+getcstatus((data) => {
     if (data.lobbyfull = previd){
         room.leave();
-        room = eval(roomtojoin);
- heads = true;
         setTimeout(function(){
-            document.getElementById("coinflip").innerHTML = `${username} flips, heads for red`;
-            sendname({flipname: username});
-        }, 200)
+            room = eval(roomtojoin);
+        }, 200);
     }
 })
 
-
-getname((data) => {
-    document.getElementById("coinflip").innerHTML = `${data.flipname} flips, heads for red`;
-});
-
-function flipcondition(){
-
-}
-
+//let [sendtest, gettest] = eval(roomtojoin).makeAction('test')
+//setInterval(function(){
+//    sendtest({test: "bruh"})
+//}, 100);
+//    
+//gettest((data) => {
+//    console.log(data.test)
+//});
 
 //flipping coin
 

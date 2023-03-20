@@ -32,9 +32,9 @@ function createroom(){
     let pname = document.getElementById("playername").value
     sendroom({addroom: roomval, gamerooms, pname, globalroomid});
     appendserverlist(pname);
-    document.cookie = `joinRoom(config,'room${globalroomid}') ${selfId}`;
+    document.cookie = `joinRoom(config,'room${globalroomid}') ${selfId} ${pname}`;
     setTimeout(function(){
-        window.location = 'coin-flip.html'
+        window.location = 'board.html'
     }, 100);
 }
 
@@ -81,7 +81,7 @@ function appendserverlist(pname, gameroom,){
 //join sequence
 
 
-let tobejoined = "";
+let tobejoined = "nil";
 
 let playerid;
 let gameid;
@@ -107,8 +107,11 @@ function initiatemulti(gameid, playerid){
     sendcstatus({lobbyfull: playerid})
     setTimeout(function(){
         room.leave();
-        room = eval(gameid);
-        window.location = 'coin-flip.html';
+        setTimeout(function(){
+            console.log(eval(gameid));
+            room = eval(gameid);
+            window.location = 'board.html';
+        }, 200);
     }, 200);
 }
 
@@ -118,6 +121,5 @@ function removeserverlist(playerid){
 
 getremoveroom((data) => {
     let remarr = document.getElementsByClassName(`${data.removeroom}`)
-    console.log(remarr[0]);
     remarr[0].parentElement.remove();
 });
