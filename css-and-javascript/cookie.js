@@ -36,8 +36,8 @@ getcstatus((data) => {
 let [sendturn, getturn] = room.makeAction('turn')
 
 getturn((data) => {
-    if(data.turn = flase){
-        alert("test")
+    if(data.turn == flase){
+        console.log("test")
         rollopt = true;
     }
 });
