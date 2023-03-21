@@ -74,8 +74,13 @@ function remove(event) {
 }
 
 
+
+
 function placefunc(event) {
     if (rollopt == true) {
+        return;
+    }
+    else if (turn == false){
         return;
     }
     else {
@@ -114,11 +119,14 @@ function placefunc(event) {
                     precolor = 1;
                     fill = "#EE5151";
                 }
+                turn = false;
+                sendturn({turn:true})
                 break;
             }
         }
     }
 }
+
 
 /*filling prearr*/
 function prefill(x, y, z) {

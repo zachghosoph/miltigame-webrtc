@@ -1,66 +1,64 @@
-import {joinRoom} from 'https://cdn.skypack.dev/trystero/ipfs';
-const config = { appId: 'line-up' };
-let room = joinRoom(config, 'session-join');
-room.onPeerJoin(peerId => console.log(`${peerId} joined`))
-room.onPeerLeave(peerId => console.log(`${peerId} left`))
-
+let joinroom;
 let prevarr;
-let previd;
-let roomtojoin;
 let x = document.cookie;
 
-let [sendcstatus, getcstatus] = room.makeAction('cstatus')
-
+let turn = false;
 
 window.onload = (event) => {
     prevarr = x.split(" ");
-    roomtojoin = prevarr[0];
-    previd = prevarr[1];
-    console.log(roomtojoin);
+    joinroom = prevarr[0];
+    room = joinroom
+
+    if (prevarr[1] = "origin"){
+        turn = true;
+    }
 };
 
-getcstatus((data) => {
-    if (data.lobbyfull = previd) {
-        room.leave();
-        setTimeout(function () {
-            room = eval(roomtojoin);
-            sendturn({turn: false});
-            getperson();
-        }, 500);
+export{turn};
+
+import {joinRoom, selfId} from 'https://cdn.skypack.dev/trystero/ipfs';
+const config = { appId: 'line-up' };
+let room = joinRoom(config, `${joinroom}`);
+console.log(room);
+room.onPeerJoin(peerId => console.log(`${peerId} joined`))
+room.onPeerLeave(peerId => console.log(`${peerId} left`))
+
+let [sendarr, getarr] = room.makeAction('array');
+
+setInterval(function(){
+    sendarr({array: boolarr});
+}, 100);
+
+getarr((data) => {
+    let newarr = data.array
+    for(let i = 0; i<newarr.length; i++){
+        for(let m = 0; m<newarr[i].length; m++){
+            if(boolarr[i][m] != newarr[i][m]){
+                boolarr[i][m] = newarr[i][m];
+
+                let canvas = document.getElementById(`${i + 1}${m + 1}`);
+                let draw = canvas.getContext("2d");
+                let wid = (top.innerWidth / 100);
+                //( canvas.width/2, canvas.height/2, 2*wid, 0, 2 * Math.PI)
+                draw.ellipse(canvas.width / 2, canvas.height / 2, 4 * wid, 2 * wid, 0, 0, Math.PI * 2)
+                draw.stroke();
+                if(newarr[i][m] == "red"){
+                    draw.fillStyle = "#EE5151";
+                }
+                else if(newarr[i][m] == "blue"){
+                    draw.fillStyle = "#5187EE";
+                }
+  
+                draw.fill();
+            }
+        }
     }
+    boolarr = newarr;
 });
 
-let [sendbcast, getbcast] = room.makeAction('bcast');
 
-function getperson(){
-    setInterval(function (){
-        sendbcast({bcast : "inroom"})
-    }, 200)
-}
-
-getbcast((data) => {
-    console.log("e");
-})
-
-
-let [sendturn, getturn] = room.makeAction('turn')
+let [sendturn, getturn] = room.makeAction('turn');
 
 getturn((data) => {
-    if(data.turn == flase){
-        console.log("test")
-        rollopt = true;
-    }
+    turn = data.turn
 });
-
-
-//let [sendtest, gettest] = eval(roomtojoin).makeAction('test')
-//setInterval(function(){
-//    sendtest({test: "bruh"})
-//}, 100);
-//
-//gettest((data) => {
-//    console.log(data.test)
-//});
-
-//flipping coin
-

@@ -11,31 +11,26 @@ let globalroomid = 0;
 
 let gameroom;
 
-document.getElementById('createroom').addEventListener('click', globalroom);
+//document.getElementById('createroom').addEventListener('click', globalroom);
 
 let [sendroom, getroom] = room.makeAction('addroom')
 let [sendremoveroom, getremoveroom] = room.makeAction('removeroom')
-let [sendglobalid, getglobalid] = room.makeAction('addglobalid')
 let [sendcstatus, getcstatus] = room.makeAction('cstatus')
 
 document.getElementById('createroom').addEventListener('click', createroom);
 
-function globalroom() {
 
-}
 
-let roomval = `joinRoom(config,'room${globalroomid}')`
+let roomval = `room${globalroomid}`
 
 function createroom() {
+    console.log(roomval)
     gameroom = joinRoom(config, `room${globalroomid}`);
     gamerooms.push(gameroom);
     let pname = document.getElementById("playername").value
     sendroom({ addroom: roomval, gamerooms, pname, globalroomid });
     appendserverlist(pname);
-    document.cookie = `joinRoom(config,'room${globalroomid}') ${selfId} ${pname}`;
-    setTimeout(function () {
-        window.location = 'board.html'
-    }, 500);
+ //   document.cookie = `joinRoom(config,'room${globalroomid}') ${selfId} ${pname}`;
 }
 
 
@@ -50,12 +45,13 @@ getroom((data, peerId) => {
     peer = peerId;
     let pname = data.pname;
     let gameroom = data.addroom;
-    let globalroomid = data.globalroomid
-    console.log(gamerooms[globalroomid]);
+    globalroomid += 1;
+    console.log(globalroomid)
     appendserverlist(pname, gameroom);
 })
 
-function appendserverlist(pname, gameroom,) {
+function appendserverlist(pname, gameroom) {
+    console.log(gameroom);
     let roomlist = document.getElementById("roomlist");
     let roomitem = document.createElement("li");
     let roomitemcont1 = document.createElement("p");
@@ -64,7 +60,7 @@ function appendserverlist(pname, gameroom,) {
 
 
     joinbutton.innerText = ("Join Room");
-    joinbutton.value = (`${gameroom} ${peer}`);
+    joinbutton.value = (`room${globalroomid-1} ${peer}`);
     joinbutton.id = ("joinbutton");
     joinbutton.className = (`${peer}`);
     let roomname = document.createTextNode(`${peer.slice(0, 4)}`);
@@ -75,7 +71,6 @@ function appendserverlist(pname, gameroom,) {
     roomitem.append(roomitemcont1, roomitemcont2, joinbutton);
     roomlist.append(roomitem);
     gamerooms.push("full")
-    globalroomid += 1;
 };
 
 //join sequence
@@ -91,9 +86,10 @@ document.addEventListener('click', (e) => {
     if (e.target.value != undefined) {
         tobejoined = e.target.value;
         if (tobejoined.includes("room")) {
-            document.cookie = `${tobejoined}`;
+ //           document.cookie = `${tobejoined}`;
             let infoarr = tobejoined.split(" ");
             gameid = infoarr[0];
+            console.log(infoarr[0])
             playerid = infoarr[1];
             initiatemulti(gameid, playerid);
         }
@@ -105,20 +101,32 @@ document.addEventListener('click', (e) => {
 
 function initiatemulti(gameid, playerid) {
     removeserverlist(playerid);
-    sendcstatus({ lobbyfull: playerid })
+    sendcstatus({cstatus: playerid})
     room.leave();
     setTimeout(function () {
-        room = eval(gameid);
-        console.log(room);
+        document.cookie = `room${globalroomid}`;
         window.location = 'board.html';
     }, 500);
 }
+
+
+getcstatus((data) => {
+    if (data.cstatus == selfId){
+        room.leave();
+        setTimeout(function () {
+            document.cookie = `room${globalroomid} origin`;
+            window.location = 'board.html';
+        }, 500);
+    } 
+})
 
 function removeserverlist(playerid) {
     sendremoveroom({ removeroom: playerid });
 }
 
 getremoveroom((data) => {
-    let remarr = document.getElementsByClassName(`${data.removeroom}`)
-    remarr[0].parentElement.remove();
+    if(selfId != data.removeroom){
+        let remarr = document.getElementsByClassName(`${data.removeroom}`)
+        remarr[0].parentElement.remove();
+    }
 });
