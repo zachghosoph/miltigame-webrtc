@@ -526,7 +526,7 @@ function rolldie() {
     }, 16.667);
     function setturn(){
       if(spectate == true){
-        turnfirst = true;
+        turnfirst = false;
         spectate = false;
         }  
     }
