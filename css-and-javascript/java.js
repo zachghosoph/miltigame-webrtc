@@ -24,6 +24,31 @@ window.onload = (event) => {
     }
 };
 
+window.addEventListener('resize', function(event) {
+    for(let i = 0; i<boolarr.length; i++){
+        for(let m = 0; m<boolarr[i].length; m++){
+            if(boolarr[i][m] == "red"){
+                let canvas = document.getElementById(`${i + 1}${m + 1}`);
+                let draw = canvas.getContext("2d");
+                let wid = (top.innerWidth / 100);
+                draw.ellipse(canvas.width / 2, canvas.height / 2, 4 * wid, 2 * wid, 0, 0, Math.PI * 2)
+                draw.stroke();
+                draw.fillStyle = "#EE5151";
+                draw.fill();
+            }
+            else if(boolarr[i][m] == "blue"){
+                let canvas = document.getElementById(`${i + 1}${m + 1}`);
+                let draw = canvas.getContext("2d");
+                let wid = (top.innerWidth / 100);
+                draw.ellipse(canvas.width / 2, canvas.height / 2, 4 * wid, 2 * wid, 0, 0, Math.PI * 2)
+                draw.stroke();
+                draw.fillStyle = "#5187EE";
+                draw.fill();
+            }
+        }
+    }
+});
+
 const config = { appId: 'line-up' };
 let room = joinRoom(config, `${joinroom}`);
 console.log(room);
@@ -460,7 +485,6 @@ function roller() {
             noroll = false;
             getRandom();
             rolldie();
-            sendturn({turn:true});
         }
     });
 }
@@ -517,6 +541,7 @@ function rolldie() {
             prevX += rolledX;
             prevY += rolledY;
             clearInterval(rollinter);
+            sendturn({turn:true});
             die = document.getElementById("c3d-1")
             face = document.getElementsByClassName("item-1")
             setturn()
@@ -527,6 +552,7 @@ function rolldie() {
     function setturn(){
       if(spectate == true){
         turnfirst = false;
+        console.log(turnfirst);
         spectate = false;
         }  
     }
