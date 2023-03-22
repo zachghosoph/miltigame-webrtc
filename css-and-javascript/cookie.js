@@ -2,20 +2,21 @@ let joinroom;
 let prevarr;
 let x = document.cookie;
 
-let turn = false;
+var turnfirst = false; 
 
 window.onload = (event) => {
     prevarr = x.split(" ");
     joinroom = prevarr[0];
+    console.log(prevarr[0])
+    console.log(prevarr)
     room = joinroom
-
-    if (prevarr[1] = "origin"){
-        turn = true;
+    if (prevarr[1] == "origin"){
+        turnfirst = true;
     }
 };
 
-export{turn};
-
+import {boolarr} from './java'
+export default{tur}
 import {joinRoom, selfId} from 'https://cdn.skypack.dev/trystero/ipfs';
 const config = { appId: 'line-up' };
 let room = joinRoom(config, `${joinroom}`);
@@ -60,5 +61,5 @@ getarr((data) => {
 let [sendturn, getturn] = room.makeAction('turn');
 
 getturn((data) => {
-    turn = data.turn
+    turnfirst = data.turn
 });

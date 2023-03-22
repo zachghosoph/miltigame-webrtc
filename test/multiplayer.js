@@ -86,10 +86,8 @@ document.addEventListener('click', (e) => {
     if (e.target.value != undefined) {
         tobejoined = e.target.value;
         if (tobejoined.includes("room")) {
- //           document.cookie = `${tobejoined}`;
             let infoarr = tobejoined.split(" ");
             gameid = infoarr[0];
-            console.log(infoarr[0])
             playerid = infoarr[1];
             initiatemulti(gameid, playerid);
         }
@@ -103,8 +101,8 @@ function initiatemulti(gameid, playerid) {
     removeserverlist(playerid);
     sendcstatus({cstatus: playerid})
     room.leave();
+    document.cookie = `${gameid} untrue`;
     setTimeout(function () {
-        document.cookie = `room${globalroomid}`;
         window.location = 'board.html';
     }, 500);
 }
@@ -113,8 +111,8 @@ function initiatemulti(gameid, playerid) {
 getcstatus((data) => {
     if (data.cstatus == selfId){
         room.leave();
+        document.cookie = `room${globalroomid} origin`;
         setTimeout(function () {
-            document.cookie = `room${globalroomid} origin`;
             window.location = 'board.html';
         }, 500);
     } 
