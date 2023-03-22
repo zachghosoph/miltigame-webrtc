@@ -449,8 +449,6 @@ function tellfunc() {
 
 // Dice visual and math
 
-let die = document.getElementById("c3d-1");
-
 let face = document.getElementsByClassName("item-1");
 
 function roller() {
@@ -469,7 +467,7 @@ function roller() {
 }
 
 
-room
+
 
 let rolledX;
 let rolledY;
@@ -481,6 +479,8 @@ let spectate = true;
 
 let [sendie, getdie] = room.makeAction('die');
 
+let die = document.getElementById("c3d-1");
+
 getdie((data) => {
     spectate = true;
     turnfirst = false;
@@ -488,6 +488,8 @@ getdie((data) => {
     rolledY = data.die[1];
     prevX = data.die[2];
     prevY = data.die[3];
+    die = document.getElementById("c3d");
+    face = document.getElementsByClassName("item")
     rolldie()
 });
 
@@ -516,6 +518,8 @@ function rolldie() {
             prevX += rolledX;
             prevY += rolledY;
             clearInterval(rollinter);
+            die = document.getElementById("c3d-1")
+            face = document.getElementsByClassName("item-1")
             setturn()
             numcheck();
             diecheck();
