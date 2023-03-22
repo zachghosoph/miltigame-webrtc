@@ -454,7 +454,6 @@ let face = document.getElementsByClassName("item-1");
 function roller() {
     die.addEventListener("click", function () {
         if (noroll == false) {
-            sendturn({turn:true});
             return;
         }
         else {
