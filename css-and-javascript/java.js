@@ -4,7 +4,7 @@ let joinroom;
 let prevarr;
 let x = document.cookie;
 alert(document.cookie);
-var turnfirst = false; 
+let turnfirst = false; 
 
 window.onload = (event) => {
     prevarr = x.split(" ");
@@ -456,14 +456,14 @@ let face = document.getElementsByClassName("item-1");
 function roller() {
     die.addEventListener("click", function () {
         if (noroll == false) {
-            sendturn({turn:true})
+            sendturn({turn:true});
             return;
         }
         else {
             noroll = false;
             getRandom();
             rolldie();
-            sendturn({turn:true})
+            sendturn({turn:true});
         }
     });
 }
@@ -477,12 +477,13 @@ let prevX = 0;
 let prevY = 0;
 let fullX = (rolledX + prevX);
 let fullY = (rolledY + prevY);
-let spectate;
+let spectate = true;
 
 let [sendie, getdie] = room.makeAction('die');
 
 getdie((data) => {
     spectate = true;
+    turnfirst = false;
     rolledX = data.die[0];
     rolledY = data.die[1];
     prevX = data.die[2];
@@ -515,10 +516,18 @@ function rolldie() {
             prevX += rolledX;
             prevY += rolledY;
             clearInterval(rollinter);
+            setturn()
             numcheck();
             diecheck();
         }
     }, 16.667);
+    function setturn(){
+      if(spectate == true){
+        turnfirst = true;
+        spectate = false;
+        }  
+    }
+    
 }
 
 function numcheck() {
