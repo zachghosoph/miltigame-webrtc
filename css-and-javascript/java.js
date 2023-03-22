@@ -3,18 +3,25 @@ import {joinRoom, selfId} from 'https://cdn.skypack.dev/trystero/ipfs';
 let joinroom;
 let prevarr;
 let x = document.cookie;
-
+alert(document.cookie);
 var turnfirst = false; 
 
 window.onload = (event) => {
     prevarr = x.split(" ");
     joinroom = prevarr[0];
-    console.log(prevarr[1])
     console.log(prevarr)
     room = joinroom
     if (prevarr[1] == "origin"){
         turnfirst = true;
     }   
+    if(prevarr[1] == "untrue"){
+        color = "blue";
+        fill = "#5187EE"
+    }
+    else{
+        color = "red";
+        fill = "#EE5151";
+    }
 };
 
 const config = { appId: 'line-up' };
@@ -34,7 +41,7 @@ getarr((data) => {
     for(let i = 0; i<newarr.length; i++){
         for(let m = 0; m<newarr[i].length; m++){
             if(boolarr[i][m] != newarr[i][m]){
-                boolarr[i][m] = newarr[i][m];
+                prearr[i][m] = newarr[i][m];
 
                 let canvas = document.getElementById(`${i + 1}${m + 1}`);
                 let draw = canvas.getContext("2d");
@@ -57,16 +64,11 @@ getarr((data) => {
 });
 
 
+
+
 let [sendturn, getturn] = room.makeAction('turn');
 
-getturn((data) => {
-    console.log(data.turn);     
-    turnfirst = data.turn;
-    if((color == "red") || (prevarr[1] != "origin")){
-        color = "blue";
-        fill = "#5187EE"
-    }
-});
+
 
 //game
 
@@ -110,9 +112,16 @@ let rollopt;
 
 let points = [0, 0];
 
-let color = "red";
+let color;
 let precolor;   
-let fill = "#EE5151";
+let fill;
+
+getturn((data) => {
+    console.log(data.turn);     
+    turnfirst = data.turn;
+});
+
+
 
 
 // Placing checkers

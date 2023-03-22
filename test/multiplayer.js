@@ -101,8 +101,8 @@ function initiatemulti(gameid, playerid) {
     removeserverlist(playerid);
     sendcstatus({cstatus: playerid})
     room.leave();
-    document.cookie = `${gameid} untrue`;
     setTimeout(function () {
+        document.cookie = `${gameid} untrue`;
         window.location = 'board.html';
     }, 500);
 }
@@ -111,8 +111,8 @@ function initiatemulti(gameid, playerid) {
 getcstatus((data) => {
     if (data.cstatus == selfId){
         room.leave();
-        document.cookie = `room${globalroomid} origin`;
         setTimeout(function () {
+            document.cookie = `room${globalroomid} origin`;
             window.location = 'board.html';
         }, 500);
     } 
