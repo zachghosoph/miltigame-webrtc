@@ -56,6 +56,27 @@ room.onPeerJoin(peerId => console.log(`${peerId} joined`))
 room.onPeerLeave(peerId => console.log(`${peerId} left`))
 
 let [sendarr, getarr] = room.makeAction('array');
+let [sendpoint, getpoint] = room.makeAction('point');
+
+
+getpoint((data) => {
+    console.log(data.color);
+    if(data.color == color){
+        return;
+    }
+    else if((data.color == "blue")){
+        console.log('precieve');
+        points[1] += 1;
+        console.log(points[1]);
+        document.getElementById('point-blue').innerHTML = `${points[1]}`;
+    }
+    else if((data.color == "red")){
+        console.log('precieve');
+        points[0] += 1;
+        console.log(points[0]);
+        document.getElementById('point-red').innerHTML = `${points[0]}`;
+    }
+});
 
 //  setInterval(function(){
 //      sendarr({array: boolarr});
@@ -141,9 +162,15 @@ let color;
 let precolor;   
 let fill;
 
-getturn((data) => {
-    console.log(data.turn);     
-    turnfirst = data.turn;
+getturn((data, peerId) => {
+    console.log(peerId);
+    if(peerId != selfId){
+        console.log(data.turn);     
+        turnfirst = data.turn;
+    }
+    else{
+        console.log("roller")
+    }
 });
 
 
@@ -178,6 +205,8 @@ for (let i = 0; i < canvelem.length; i++) {
                     draw.fill();
                     gamecheck.push(color);
 
+                    turnfirst = false;
+
                     cfunc();
                     rollfuncl2();
                     rollfuncl3();
@@ -196,7 +225,6 @@ for (let i = 0; i < canvelem.length; i++) {
                     //    precolor = 1;
                     //    fill = "#EE5151";
                     //}
-                    turnfirst = false;
                     sendarr({array: boolarr});
                     break;
                 }
@@ -498,13 +526,15 @@ let prevX = 0;
 let prevY = 0;
 let fullX = (rolledX + prevX);
 let fullY = (rolledY + prevY);
-let spectate = true;
+let spectate = false;
 
 let [sendie, getdie] = room.makeAction('die');
 
 let die = document.getElementById("c3d-1");
 
+
 getdie((data) => {
+    console.log("rec");
     spectate = true;
     turnfirst = false;
     rolledX = data.die[0];
@@ -512,7 +542,7 @@ getdie((data) => {
     prevX = data.die[2];
     prevY = data.die[3];
     die = document.getElementById("c3d");
-    face = document.getElementsByClassName("item")
+    face = document.getElementsByClassName("item");
     rolldie()
 });
 
@@ -521,11 +551,13 @@ function getRandom() {
     rolledY = (Math.floor(Math.random() * 23) + 1);
     fullX = (rolledX + prevX);
     fullY = (rolledY + prevY);
+    turnfirst = false;
     sendie({die:[rolledX, rolledY, prevX, prevY]});
 }
 
 function rolldie() {
     let i = 0;
+    turnfirst = false;
     let rollinter = setInterval(function () {
         for (let i = 0; i < face.length; i++) {
             face[i].style.backgroundColor = "rgba(255, 255, 255, 0.5)";
@@ -541,7 +573,10 @@ function rolldie() {
             prevX += rolledX;
             prevY += rolledY;
             clearInterval(rollinter);
-            sendturn({turn:true});
+            if(spectate == false){
+                sendturn({turn:true});  
+            }
+
             die = document.getElementById("c3d-1")
             face = document.getElementsByClassName("item-1")
             setturn()
@@ -690,11 +725,23 @@ function diecheck() {
     }
 }
 
-function addpoint() {
-    points[precolor]++;
-    [0, 1].forEach((x) => document.getElementById("point-" + ['red', 'blue'][x]).innerHTML = points[x]);
+let pointid = 0;
 
-    document.getElementById("pos").innerHTML = "Point Gained";
+function addpoint() {
+    if(color == "red"){
+        console.log("sending red")
+        points[0] += 1;
+        sendpoint({point: pointid, color:"red"});
+        document.getElementById('point-red').innerHTML = `${points[0]}`;
+    }
+    else{
+        console.log("sending blue")
+        points[1] += 1;
+        sendpoint({point: pointid, color:"blue"});
+        document.getElementById('point-blue').innerHTML = `${points[1]}`;
+    }
+    
+    document.getElementById("pos").innerHTML = "Point Gained";  
 }
 
 
