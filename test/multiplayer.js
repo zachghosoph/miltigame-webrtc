@@ -27,7 +27,7 @@ function createroom() {
     console.log(roomval)
     gameroom = joinRoom(config, `room${globalroomid}`);
     gamerooms.push(gameroom);
-    let pname = document.getElementById("playername").value
+    let pname = document.getElementById("playername").value;
     sendroom({ addroom: roomval, gamerooms, pname, globalroomid });
     appendserverlist(pname);
  //   document.cookie = `joinRoom(config,'room${globalroomid}') ${selfId} ${pname}`;
@@ -102,7 +102,7 @@ function initiatemulti(gameid, playerid) {
     sendcstatus({cstatus: playerid})
     room.leave();
     setTimeout(function () {
-        document.cookie = `${gameid} untrue`;
+        document.cookie = `${gameid} untrue ${document.getElementById("playername").value}`;
         window.location = 'board.html';
     }, 500);
 }
@@ -112,7 +112,7 @@ getcstatus((data) => {
     if (data.cstatus == selfId){
         room.leave();
         setTimeout(function () {
-            document.cookie = `room${globalroomid} origin`;
+            document.cookie = `room${globalroomid} origin ${document.getElementById("playername").value}`;
             window.location = 'board.html';
         }, 500);
     } 

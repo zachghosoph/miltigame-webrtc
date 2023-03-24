@@ -3,12 +3,14 @@ import {joinRoom, selfId} from 'https://cdn.skypack.dev/trystero/ipfs';
 let joinroom;
 let prevarr;
 let x = document.cookie;
-alert(document.cookie);
 let turnfirst = false; 
+
+let playername;
 
 window.onload = (event) => {
     prevarr = x.split(" ");
     joinroom = prevarr[0];
+    playername = prevarr[2];
     room = joinroom
     if (prevarr[1] == "origin"){
         turnfirst = true;
@@ -21,7 +23,15 @@ window.onload = (event) => {
         color = "red";
         fill = "#EE5151";
     }
+    if(color == "red"){
+        document.getElementById("player-1").innerHTML = `${playername}`
+    }
+    else if(color == "blue"){
+        document.getElementById("player-2").innerHTML = `${playername}`
+    }
 };
+
+
 
 window.addEventListener('resize', function(event) {
     for(let i = 0; i<boolarr.length; i++){
@@ -48,12 +58,32 @@ window.addEventListener('resize', function(event) {
     }
 });
 
+
 const config = { appId: 'line-up' };
 let room = joinRoom(config, `${joinroom}`);
+
+let [sendplayers, getplayers] = room.makeAction('players');
+
 console.log(room);
-room.onPeerJoin(peerId => console.log(`${peerId} joined`))
+room.onPeerJoin(peerId => console.log(`${peerId} joined`, sendplayers({players: `${playername}`})))
 room.onPeerLeave(peerId => console.log(`${peerId} left`))
 
+
+//
+let player2;
+
+
+getplayers((data) => {
+    console.log(data.players);
+    player2 = data.players;
+    if(color == "red"){
+        document.getElementById("player-2").innerHTML = `${player2}`
+    }
+    else if(color == "blue"){
+        document.getElementById("player-1").innerHTML = `${player2}`
+    }
+});
+//
 let [sendarr, getarr] = room.makeAction('array');
 let [sendpoint, getpoint] = room.makeAction('point');
 
