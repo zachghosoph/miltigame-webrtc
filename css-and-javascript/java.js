@@ -9,7 +9,6 @@ let turnfirst = false;
 window.onload = (event) => {
     prevarr = x.split(" ");
     joinroom = prevarr[0];
-    console.log(prevarr)
     room = joinroom
     if (prevarr[1] == "origin"){
         turnfirst = true;
@@ -159,15 +158,9 @@ let color;
 let precolor;   
 let fill;
 
-getturn((data, peerId) => {
-    console.log(peerId);
-    if(peerId != selfId){
-        console.log(data.turn);     
-        turnfirst = data.turn;
-    }
-    else{
-        console.log("roller")
-    }
+getturn((data, peerId) => {   
+    turnfirst = true;
+    console.log(turnfirst);
 });
 
 
@@ -179,11 +172,15 @@ let temproll = false;
 let canvelem = document.querySelectorAll('.canvas');
 for (let i = 0; i < canvelem.length; i++) {
     canvelem[i].addEventListener('click', e => {
+        console.log(rollopt);
+        console.log(turnfirst);
         if (rollopt == true) {
             return;
         }
+
         else if (turnfirst == false){
-            return
+            console.log("bruh");
+            return;
         }
         else {
             temproll = true;
@@ -534,7 +531,6 @@ let die = document.getElementById("c3d-1");
 
 
 getdie((data) => {
-    console.log("rec");
     spectate = true;
     turnfirst = false;
     rolledX = data.die[0];
@@ -589,8 +585,7 @@ function rolldie() {
     }, 16.667);
     function setturn(){
       if(spectate == true){
-        turnfirst = false;
-        console.log(turnfirst);
+        turnfirst = true;
         spectate = false;
         }  
     }

@@ -96,11 +96,13 @@ li button{
     height: 2vw;
 
 }
-li p,
-li button{
+li p{
     margin-top: -.15vw;
 }
-
+li button{
+    height: 1.2vw;
+    margin-top: calc(.4vw - .15vw);
+}
 
 .roomcreate{
     height: 2vw;
@@ -121,8 +123,8 @@ input::placeholder{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 30vw;
-    margin-left: 40vw;
+    width: 40vw;
+    margin-left: 30vw;
 }
 
 .roomlist,
@@ -132,3 +134,9 @@ input::placeholder{
     margin-bottom: 2vw;
 }
 
+
+
+#createroom{
+    width: 8vw;
+    height: 1.2vw;
+}
