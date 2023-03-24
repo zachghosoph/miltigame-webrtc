@@ -160,7 +160,7 @@ let fill;
 
 getturn((data, peerId) => {   
     turnfirst = true;
-    console.log(turnfirst);
+    console.log(turnfirst, "should be true");
 });
 
 
@@ -179,10 +179,10 @@ for (let i = 0; i < canvelem.length; i++) {
         }
 
         else if (turnfirst == false){
-            console.log("bruh");
             return;
         }
         else {
+            spectate = false;
             temproll = true;
 
             let box = e.target;
@@ -532,7 +532,10 @@ let die = document.getElementById("c3d-1");
 
 getdie((data) => {
     spectate = true;
+    console.log("spectate true");
     turnfirst = false;
+    console.log(spectate, "see");
+    console.log(turnfirst, "tee")
     rolledX = data.die[0];
     rolledY = data.die[1];
     prevX = data.die[2];
@@ -578,7 +581,8 @@ function rolldie() {
             if(temproll == false){
                 return;
             }
-            setturn()
+            setturn();
+            spectate = false;
             numcheck();
             diecheck();
         }
@@ -586,7 +590,7 @@ function rolldie() {
     function setturn(){
       if(spectate == true){
         turnfirst = true;
-        spectate = false;
+        console.log("turnfirst true");
         }  
     }
     
