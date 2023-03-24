@@ -61,10 +61,7 @@ let [sendpoint, getpoint] = room.makeAction('point');
 
 getpoint((data) => {
     console.log(data.color);
-    if(data.color == color){
-        return;
-    }
-    else if((data.color == "blue")){
+    if((data.color == "blue")){
         console.log('precieve');
         points[1] += 1;
         console.log(points[1]);
@@ -177,6 +174,7 @@ getturn((data, peerId) => {
 
 
 // Placing checkers
+let temproll = false;
 
 let canvelem = document.querySelectorAll('.canvas');
 for (let i = 0; i < canvelem.length; i++) {
@@ -188,6 +186,8 @@ for (let i = 0; i < canvelem.length; i++) {
             return
         }
         else {
+            temproll = true;
+
             let box = e.target;
             let col = box.parentElement.parentElement.id;
             let num = parseFloat(col.replace('c', '')) - 1;
@@ -579,6 +579,9 @@ function rolldie() {
 
             die = document.getElementById("c3d-1")
             face = document.getElementsByClassName("item-1")
+            if(temproll == false){
+                return;
+            }
             setturn()
             numcheck();
             diecheck();
@@ -740,7 +743,7 @@ function addpoint() {
         sendpoint({point: pointid, color:"blue"});
         document.getElementById('point-blue').innerHTML = `${points[1]}`;
     }
-    
+    temproll = false;
     document.getElementById("pos").innerHTML = "Point Gained";  
 }
 
