@@ -5,11 +5,7 @@ room.onPeerJoin(peerId => console.log(`${peerId} joined`))
 room.onPeerLeave(peerId => console.log(`${peerId} left`))
 //sending room data
 
-let gamerooms = [];
-
-let globalroomid = 0;
-
-let gameroom;
+let globalroomid = (Math.random()+1).toString(36).substring(2);
 
 //document.getElementById('createroom').addEventListener('click', globalroom);
 
@@ -19,39 +15,42 @@ let [sendcstatus, getcstatus] = room.makeAction('cstatus')
 
 document.getElementById('createroom').addEventListener('click', createroom);
 
-
-
-let roomval = `room${globalroomid}`
-
 function createroom() {
-    console.log(roomval)
-    gameroom = joinRoom(config, `room${globalroomid}`);
-    gamerooms.push(gameroom);
+    peer = "self";
     let pname = document.getElementById("playername").value;
-    sendroom({ addroom: roomval, gamerooms, pname, globalroomid });
-    appendserverlist(pname);
- //   document.cookie = `joinRoom(config,'room${globalroomid}') ${selfId} ${pname}`;
+    appendserverlist(pname, gameroom);
+    Broadcast(pname);
+}
+function Broadcast(pname){
+    setInterval(() => {
+        sendroom({addroom: globalroomid, pname});
+    }, 500);
 }
 
 
+
 //data received
+let gameroom = "self";
+let peer = "self";
 
-let peer = "";
-
-let info;
+let roomarr = [`${gameroom}`]
 
 getroom((data, peerId) => {
-    info = data;
-    peer = peerId;
-    let pname = data.pname;
-    let gameroom = data.addroom;
-    globalroomid += 1;
-    console.log(globalroomid)
-    appendserverlist(pname, gameroom);
+    for(let i = 0; i<roomarr.length; i++){
+        if(roomarr[i] == data.addroom){
+            return;
+        }
+        else if(roomarr[i+1] == undefined){
+            roomarr.push(data.addroom);
+            peer = peerId;
+            let pname = data.pname; 
+            gameroom = data.addroom;
+            appendserverlist(pname, gameroom);
+        }
+    }
 })
 
 function appendserverlist(pname, gameroom) {
-    console.log(gameroom);
     let roomlist = document.getElementById("roomlist");
     let roomitem = document.createElement("li");
     let roomitemcont1 = document.createElement("p");
@@ -60,7 +59,7 @@ function appendserverlist(pname, gameroom) {
 
 
     joinbutton.innerText = ("Join Room");
-    joinbutton.value = (`room${globalroomid} ${peer}`);
+    joinbutton.value = (`room${gameroom} ${peer}`);
     joinbutton.id = ("joinbutton");
     joinbutton.className = (`${peer}`);
     let roomname = document.createTextNode(`${peer.slice(0, 4)}`);
@@ -70,12 +69,10 @@ function appendserverlist(pname, gameroom) {
     roomitemcont2.appendChild(playername);
     roomitem.append(roomitemcont1, roomitemcont2, joinbutton);
     roomlist.append(roomitem);
-    gamerooms.push("full")
 };
 
 //join sequence
 
-console.log(room);
 
 let tobejoined = "nil";
 
