@@ -32,7 +32,6 @@ window.onload = (event) => {
 };
 
 
-
 window.addEventListener('resize', function(event) {
     for(let i = 0; i<boolarr.length; i++){
         for(let m = 0; m<boolarr[i].length; m++){
@@ -62,11 +61,24 @@ window.addEventListener('resize', function(event) {
 const config = { appId: 'line-up' };
 let room = joinRoom(config, `${joinroom}`);
 
+let onjoincondition = false;
 let [sendplayers, getplayers] = room.makeAction('players');
 
-console.log(room);
-room.onPeerJoin(peerId => console.log(`${peerId} joined`, sendplayers({players: `${playername}`})))
+room.onPeerJoin(peerId => (console.log(`${peerId} joined`, sendplayers({players: `${playername}`})), onjoincondition = peerId))
 room.onPeerLeave(peerId => console.log(`${peerId} left`))
+
+onjoin();
+
+function onjoin(){
+    if(onjoincondition === false){
+        window.setTimeout(onjoin, 1000);
+    }
+    else{
+        document.getElementById("join").remove();
+        return;
+    }
+}
+
 
 
 //
@@ -74,7 +86,6 @@ let player2;
 
 
 getplayers((data) => {
-    console.log(data.players);
     player2 = data.players;
     if(color == "red"){
         document.getElementById("player-2").innerHTML = `${player2}`
@@ -89,17 +100,12 @@ let [sendpoint, getpoint] = room.makeAction('point');
 
 
 getpoint((data) => {
-    console.log(data.color);
     if((data.color == "blue")){
-        console.log('precieve');
         points[1] += 1;
-        console.log(points[1]);
         document.getElementById('point-blue').innerHTML = `${points[1]}`;
     }
     else if((data.color == "red")){
-        console.log('precieve');
         points[0] += 1;
-        console.log(points[0]);
         document.getElementById('point-red').innerHTML = `${points[0]}`;
     }
 });
@@ -143,6 +149,8 @@ let [sendturn, getturn] = room.makeAction('turn');
 
 
 //game
+
+//on join to server
 
 // board array
 
@@ -190,7 +198,6 @@ let fill;
 
 getturn((data, peerId) => {   
     turnfirst = true;
-    console.log(turnfirst, "should be true");
 });
 
 
@@ -202,8 +209,6 @@ let temproll = false;
 let canvelem = document.querySelectorAll('.canvas');
 for (let i = 0; i < canvelem.length; i++) {
     canvelem[i].addEventListener('click', e => {
-        console.log(rollopt);
-        console.log(turnfirst);
         if (rollopt == true) {
             return;
         }
@@ -570,10 +575,7 @@ let die = document.getElementById("c3d-1");
 
 getdie((data) => {
     spectate = true;
-    console.log("spectate true");
     turnfirst = false;
-    console.log(spectate, "see");
-    console.log(turnfirst, "tee")
     rolledX = data.die[0];
     rolledY = data.die[1];
     prevX = data.die[2];
@@ -634,7 +636,6 @@ function rolldie() {
     function setturn(){
       if(spectate == true){
         turnfirst = true;
-        console.log("turnfirst true");
         }  
     }
     
@@ -775,13 +776,11 @@ let pointid = 0;
 
 function addpoint() {
     if(color == "red"){
-        console.log("sending red")
         points[0] += 1;
         sendpoint({point: pointid, color:"red"});
         document.getElementById('point-red').innerHTML = `${points[0]}`;
     }
     else{
-        console.log("sending blue")
         points[1] += 1;
         sendpoint({point: pointid, color:"blue"});
         document.getElementById('point-blue').innerHTML = `${points[1]}`;

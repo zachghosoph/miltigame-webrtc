@@ -2,7 +2,7 @@ import { joinRoom, selfId } from 'https://cdn.skypack.dev/trystero/ipfs';
 const config = { appId: 'line-up' };
 let room = joinRoom(config, 'session-join');
 room.onPeerJoin(peerId => console.log(`${peerId} joined`))
-room.onPeerLeave(peerId => console.log(`${peerId} left`))
+room.onPeerLeave(peerId => (console.log(`${peerId} left`), removeplayerlist(peerId)))
 //sending room data
 
 let globalroomid = (Math.random()+1).toString(36).substring(2);
@@ -28,28 +28,68 @@ function Broadcast(pname){
 }
 
 //playerlist
+let playerarr = [""];
+let id;
+
 //local append
 let [sendplayername, getplayername] = room.makeAction('playername')
 let listname;
 
 document.getElementById("playername").addEventListener("change", (e) => {
+    for(let i = 0; i < playerarr.length; i++){
+        if(playerarr[i] == selfId){
+            return
+        }
+        else if(playerarr[i+1] == undefined){
+            playerarr.push(selfId)
+            listname = e.target.value;
+            id = selfId;
+            Broadcastname(listname);
+            appendplayerlist(listname, id);
+        }
+    }
     listname = e.target.value;
-    sendplayername({playername: listname, selfId})
-    appendplayerlist();
+    id = selfId;
+    playerarr.push(selfId)
+    Broadcastname(listname);
+    appendplayerlist(listname, id);
 });
 
+function Broadcastname(listname){
+    setInterval(() => {
+        sendplayername({playername: listname});
+    }, 500);
+}
+
 //external append
+getplayername((data, peerId) => {
+    for(let i = 0; i < playerarr.length; i++){
+        if(playerarr[i] == peerId){
+            return;
+        }
+        else if(playerarr[i+1] == undefined){
+            playerarr[i+1] = peerId;
+            listname = data.playername;
+            id = peerId;
+            appendplayerlist(listname, id);
+        }
+    }
+});
 
-
-//append function
-function appendplayerlist(){
+//append functions
+function appendplayerlist(listname, id){
     let playerlist = document.getElementById("playerlist");
     let playerli = document.createElement("li");
-    playerli.value = `${selfId}`;
-    let name = document.createTextNode(`${listname.slice(0,10)}`);
+    playerli.id = `${id}`;
+    let name = document.createTextNode(`${listname.slice(0,5)}`);
 
     playerli.appendChild(name);
     playerlist.appendChild(playerli);
+}
+
+function removeplayerlist(peerId){
+    console.log('j')
+    document.getElementById(`${peerId}`).remove();
 }
 
 //data received
@@ -139,7 +179,7 @@ getcstatus((data) => {
 })
 
 function removeserverlist(playerid) {
-    sendremoveroom({ removeroom: playerid });
+    sendremoveroom({removeroom: playerid});
 }
 
 getremoveroom((data) => {

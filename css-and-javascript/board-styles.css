@@ -146,3 +146,21 @@ div>h2{
     /* background-image: url(/images/diamond-upholstery.png); */
     /* background-image: url(/images/diagmonds-light.png); */
 }
+
+/*join blocker*/
+.joindiv{
+    position: absolute;
+    border-radius: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 50vw;
+    height: 25vh;
+    margin-top: calc((100vh - 25vh) / 2);
+    min-height: 10vw;
+    background-color: rgb(0,0,0,0.5);
+}
+
+.joindiv h2{
+    color: white;
+}

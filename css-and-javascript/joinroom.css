@@ -139,6 +139,8 @@ input::placeholder{
     width: 60vw;
     background-color: white;    
     margin-bottom: 2vw;
+    display: flex;
+    align-self: flex-start;
 }
 .playerlist{
     display: flex;
@@ -174,8 +176,13 @@ input::placeholder{
 }
 
 .playerlist ul li{
-    width: 5vw;
+    width: 100%;
     padding: 0;
+    display: flex;
+    line-height: 1.85vw;
+    justify-content: center;
+    text-align: center;
+
 }
 
 .playerlist ul li:last-of-type{
