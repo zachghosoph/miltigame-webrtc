@@ -532,6 +532,14 @@ function tellfunc() {
 let face = document.getElementsByClassName("item-1");
 
 function roller() {
+    if(color == "red"){
+        die = document.getElementById("c3d");
+        face = document.getElementsByClassName("item");
+    }
+    else if (color == "blue"){
+        die = document.getElementById("c3d-1");
+        face = document.getElementsByClassName("item-1");
+    }
     die.addEventListener("click", function () {
         if (noroll == false) {
             return;
@@ -570,8 +578,14 @@ getdie((data) => {
     rolledY = data.die[1];
     prevX = data.die[2];
     prevY = data.die[3];
-    die = document.getElementById("c3d");
-    face = document.getElementsByClassName("item");
+    if(color == "red"){
+        die = document.getElementById("c3d-1");
+        face = document.getElementsByClassName("item-1");
+    }
+    else if (color == "blue"){
+        die = document.getElementById("c3d");
+        face = document.getElementsByClassName("item");
+    }
     rolldie()
 });
 

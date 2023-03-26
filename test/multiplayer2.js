@@ -36,7 +36,7 @@ let peer = "self";
 let roomarr = [`${gameroom}`]
 
 getroom((data, peerId) => {
-    for(let i = 0; i<roomarr.length; i++){
+    for(let i = 0; i<roomarr.length; i++){  
         if(roomarr[i] == data.addroom){
             return;
         }
