@@ -20,6 +20,7 @@ body{
 
 /*rooms*/
 .datadiv{
+    height: 2.5vw;
     display: flex;
     width: 55vw;
     justify-content: space-between;
@@ -60,6 +61,7 @@ body{
     height: 2vw;
     margin-bottom: 0;
 }
+
 
 .roomlist>ul{
     width: 55vw;
@@ -127,13 +129,64 @@ input::placeholder{
     margin-left: 30vw;
 }
 
-.roomlist,
+
 .roomcreate{
     width: 70vw;
     background-color: white;    
     margin-bottom: 2vw;
 }
+.roomlist{
+    width: 60vw;
+    background-color: white;    
+    margin-bottom: 2vw;
+}
+.playerlist{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    min-height: 10vw; 
+    width: 8vw;
+    margin-top: 2vw;
+    background-color: white;    
+    margin-bottom: 2vw;
+}
+.playerlist>ul{
+    margin-top: 2.5vw;
+    width: 5vw;
+    min-height: 2vw;
+    border-left: .15vw solid rgb(66, 66, 66, 0.5);
+    border-right: .15vw solid rgb(66, 66, 66, 0.5);
+    padding: 0;
+    margin-bottom: 4vw;
+    list-style: none; 
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+}
 
+.playerlist h2{
+    text-align: center;
+    border-bottom: .15vw solid rgb(66, 66, 66, 0.5);
+    height: 2vw;
+    width: 5vw;
+    margin-bottom: 0;
+}
+
+.playerlist ul li{
+    width: 5vw;
+    padding: 0;
+}
+
+.playerlist ul li:last-of-type{
+    border-bottom: .15vw solid rgba(41, 40, 40, 0.5);
+}
+
+.infoboard{
+    width: 70vw;
+    display: flex;
+    justify-content: space-between;
+}
 
 
 #createroom{

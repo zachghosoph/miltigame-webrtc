@@ -27,7 +27,30 @@ function Broadcast(pname){
     }, 500);
 }
 
+//playerlist
+//local append
+let [sendplayername, getplayername] = room.makeAction('playername')
+let listname;
 
+document.getElementById("playername").addEventListener("change", (e) => {
+    listname = e.target.value;
+    sendplayername({playername: listname, selfId})
+    appendplayerlist();
+});
+
+//external append
+
+
+//append function
+function appendplayerlist(){
+    let playerlist = document.getElementById("playerlist");
+    let playerli = document.createElement("li");
+    playerli.value = `${selfId}`;
+    let name = document.createTextNode(`${listname.slice(0,10)}`);
+
+    playerli.appendChild(name);
+    playerlist.appendChild(playerli);
+}
 
 //data received
 let gameroom = "self";
@@ -63,7 +86,7 @@ function appendserverlist(pname, gameroom) {
     joinbutton.id = ("joinbutton");
     joinbutton.className = (`${peer}`);
     let roomname = document.createTextNode(`${peer.slice(0, 4)}`);
-    let playername = document.createTextNode(`${pname.slice(0, 20)}`);
+    let playername = document.createTextNode(`${pname.slice(0, 10)}`);
 
     roomitemcont1.appendChild(roomname);
     roomitemcont2.appendChild(playername);
